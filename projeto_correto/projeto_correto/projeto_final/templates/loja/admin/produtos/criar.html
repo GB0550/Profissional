@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Criar Produto</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <div style="display: flex; gap: 15px; margin-top: 2rem;">
+        <button type="submit" class="btn btn-success">
+            Salvar Produto
+        </button>
+
+        <a href="{% url 'painel_admin' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Voltar ao Painel
+        </a>
+    </div>
+</form>
+
+{% endblock %}

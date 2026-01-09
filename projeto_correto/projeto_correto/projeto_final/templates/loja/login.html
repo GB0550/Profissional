@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - JHG CELL{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 50px auto;">
+    <h1 style="font-size: 36px; margin-bottom: 20px; text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px;">
+        Login
+    </h1>
+
+    <div class="card">
+        <form method="POST">
+            {% csrf_token %}
+
+            <label for="username">Nome de Usuário</label>
+            <input type="text" id="username" name="username" required autofocus>
+
+            <label for="password">Senha</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit" class="btn" style="width: 100%; margin-top: 20px; font-size: 16px; padding: 12px;">
+                Entrar
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 30px; padding-top: 30px; border-top: 2px solid #000;">
+            <p>Ainda não tem conta?</p>
+            <a href="{% url 'cadastro' %}" class="btn btn-secondary" style="margin-top: 15px; display: inline-block;">
+                Criar Nova Conta
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

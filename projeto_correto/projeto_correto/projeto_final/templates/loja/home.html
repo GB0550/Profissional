@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}JHG CELL - Loja de Celulares{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 40px 0; background-color: #f5f5f5; margin: -30px -20px 30px -20px; border-bottom: 3px solid #000;">
+    <h1 style="font-size: 48px; margin-bottom: 10px;">BEM-VINDO À JHG CELL</h1>
+    <p style="font-size: 20px;">Os melhores celulares com os melhores preços</p>
+</div>
+
+<section>
+    <h2 style="font-size: 32px; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px;">Categorias</h2>
+    <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+        {% for categoria in categorias %}
+            <div class="card" style="text-align: center;">
+                <h3>{{ categoria.nome }}</h3>
+                <a href="{% url 'produtos' %}?categoria={{ categoria.id }}" class="btn" style="margin-top: 15px;">Ver Produtos</a>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section style="margin-top: 50px;">
+    <h2 style="font-size: 32px; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px;">Produtos em Destaque</h2>
+
+    {% if produtos_destaque %}
+        <div class="grid">
+            {% for produto in produtos_destaque %}
+                <div class="card">
+                    {% if produto.imagem %}
+                        <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}" style="width: 100%; height: 220px; object-fit: cover; border-radius: 12px 12px 0 0; transition: transform 0.3s ease;">
+                    {% else %}
+                        <div style="width: 100%; height: 200px; background-color: #e0e0e0; border: 1px solid #000; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
+                            <span>Sem imagem</span>
+                        </div>
+                    {% endif %}
+                    <h3 style="font-size: 18px; margin: 10px 0;">{{ produto.nome }}</h3>
+                    <p style="font-size: 24px; font-weight: bold; margin: 10px 0;">R$ {{ produto.preco }}</p>
+                    <p style="margin: 10px 0;">Estoque: {{ produto.estoque }} unidades</p>
+                    <a href="{% url 'produto_detalhe' produto.id %}" class="btn" style="width: 100%; text-align: center; margin-top: 10px;">Ver Detalhes</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="text-align: center; padding: 40px; background-color: #f5f5f5; border: 2px solid #000;">Nenhum produto em destaque no momento.</p>
+    {% endif %}
+
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{% url 'produtos' %}" class="btn" style="font-size: 18px; padding: 15px 30px;">Ver Todos os Produtos</a>
+    </div>
+</section>
+{% endblock %}
