@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Painel Admin · Produtos{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>📦 Gerenciar Produtos</h1>
+    <p style="opacity: 0.8; margin-top: 0.5rem;">
+        Adicione, edite ou remova produtos da loja
+    </p>
+
+    <!-- Botão Criar -->
+    <div style="margin: 2rem 0;">
+        <a href="{% url 'admin_criar_produto' %}" class="btn">
+            <i class="bi bi-plus-circle"></i> Novo Produto
+        </a>
+    </div>
+
+    {% if produtos %}
+        <div class="grid">
+            {% for produto in produtos %}
+                <div class="card">
+                    <h3>{{ produto.nome }}</h3>
+
+                    <p style="opacity: 0.8; margin: 0.5rem 0;">
+                        Categoria: {{ produto.categoria.nome }}
+                    </p>
+
+                    <p style="font-weight: 600; margin-bottom: 1rem;">
+                        R$ {{ produto.preco }}
+                    </p>
+
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <!-- Editar -->
+                        <a href="{% url 'admin_editar_produto' produto.id %}" class="btn btn-secondary">
+                            <i class="bi bi-pencil-square"></i> Editar
+                        </a>
+
+                        <!-- Deletar -->
+                        <a href="{% url 'admin_deletar_produto' produto.id %}"
+                           class="btn"
+                           style="border-color: #ef4444; color: #ef4444;"
+                           onclick="return confirm('Tem certeza que deseja deletar este produto?')">
+                            <i class="bi bi-trash"></i> Deletar
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="card" style="text-align: center;">
+            <p>Nenhum produto cadastrado.</p>
+        </div>
+    {% endif %}
+
+    <!-- Voltar -->
+    <div style="margin-top: 3rem;">
+        <a href="{% url 'painel_admin' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Voltar ao Painel
+        </a>
+    </div>
+</div>
+{% endblock %}

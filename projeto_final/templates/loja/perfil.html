@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+
+{% block title %}Meu Perfil - JHG CELL{% endblock %}
+
+{% block content %}
+<div class="perfil-page">
+    <div class="perfil-container">
+        <h1 class="perfil-title">Meu Perfil</h1>
+
+        {% if is_admin %}
+        <div class="perfil-grid">
+
+            <div class="card card-info">
+                <h3>🔐 Administrador</h3>
+
+                <div class="avatar">👤</div>
+
+                <h4>{{ user.get_full_name }}</h4>
+                <p class="username">@{{ user.username }}</p>
+
+                <span class="badge-admin">ADMINISTRADOR</span>
+
+                <div class="info-list">
+                    <p><strong>E-mail:</strong> {{ user.email }}</p>
+                    <p><strong>Conta criada:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
+                    <p><strong>Último login:</strong> {{ user.last_login|date:"d/m/Y H:i" }}</p>
+                    <p><strong>Status:</strong> {% if user.is_active %}Ativo{% else %}Inativo{% endif %}</p>
+                    <p><strong>Permissões:</strong> {% if user.is_superuser %}Super Admin{% else %}Staff{% endif %}</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+
+                <a href="{% url 'admin:index' %}" class="btn">
+                    <i class="bi bi-person-gear"></i> Painel Administrativo
+                </a>
+
+                <a href="{% url 'password_change' %}" class="btn" style="margin-top:16px;">
+                    <i class="bi bi-key"></i> Alterar senha
+                </a>
+
+
+
+            </div>
+
+
+
+            </div>
+
+            <div class="card card-form">
+                <h3>✏️ Editar Dados</h3>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <label>Nome</label>
+                    <input type="text" name="first_name" value="{{ user.first_name }}">
+
+                    <label>Sobrenome</label>
+                    <input type="text" name="last_name" value="{{ user.last_name }}">
+
+                    <label>E-mail</label>
+                    <input type="email" name="email" value="{{ user.email }}">
+
+                    <label>Telefone</label>
+                    <input type="text" name="telefone" value="{{ cliente.telefone }}">
+
+                    <label>CEP</label>
+                    <input type="text" name="cep" value="{{ cliente.cep }}">
+
+                    <label>Endereço</label>
+                    <input type="text" name="endereco" value="{{ cliente.endereco }}">
+
+                    <label>Cidade</label>
+                    <input type="text" name="cidade" value="{{ cliente.cidade }}">
+
+                    <label>Estado</label>
+                    <select name="estado">
+                        <option value="SP" {% if cliente.estado == 'SP' %}selected{% endif %}>São Paulo</option>
+                        <option value="RJ" {% if cliente.estado == 'RJ' %}selected{% endif %}>Rio de Janeiro</option>
+                        <option value="MG" {% if cliente.estado == 'MG' %}selected{% endif %}>Minas Gerais</option>
+                    </select>
+
+                    <button type="submit" class="btn-primary">Salvar Alterações</button>
+                </form>
+
+            </div>
+
+        </div>
+
+        {% else %}
+
+        <div class="perfil-grid">
+
+            <div class="card card-info">
+                <h3>👤 Informações</h3>
+
+                <div class="avatar">👤</div>
+
+                <h4>{{ user.get_full_name }}</h4>
+                <p class="username">@{{ user.username }}</p>
+
+                <div class="info-list">
+                    <p><strong>E-mail:</strong> {{ user.email }}</p>
+                    <p><strong>CPF:</strong> {{ cliente.cpf }}</p>
+                    <p><strong>Membro desde:</strong> {{ cliente.data_cadastro|date:"d/m/Y" }}</p>
+                </div>
+
+                <a href="{% url 'password_change' %}" class="btn" style="margin-top:16px;">
+                    <i class="bi bi-key"></i> Alterar senha
+                </a>
+                
+            </div>
+
+            <div class="card card-form">
+                <h3>✏️ Editar Dados</h3>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <label>Nome</label>
+                    <input type="text" name="first_name" value="{{ user.first_name }}">
+
+                    <label>Sobrenome</label>
+                    <input type="text" name="last_name" value="{{ user.last_name }}">
+
+                    <label>E-mail</label>
+                    <input type="email" name="email" value="{{ user.email }}">
+
+                    <label>Telefone</label>
+                    <input type="text" name="telefone" value="{{ cliente.telefone }}">
+
+                    <label>CEP</label>
+                    <input type="text" name="cep" value="{{ cliente.cep }}">
+
+                    <label>Endereço</label>
+                    <input type="text" name="endereco" value="{{ cliente.endereco }}">
+
+                    <label>Cidade</label>
+                    <input type="text" name="cidade" value="{{ cliente.cidade }}">
+
+                    <label>Estado</label>
+                    <select name="estado">
+                        <option value="SP" {% if cliente.estado == 'SP' %}selected{% endif %}>São Paulo</option>
+                        <option value="RJ" {% if cliente.estado == 'RJ' %}selected{% endif %}>Rio de Janeiro</option>
+                        <option value="MG" {% if cliente.estado == 'MG' %}selected{% endif %}>Minas Gerais</option>
+                    </select>
+
+                    <button type="submit" class="btn-primary">Salvar Alterações</button>
+                </form>
+
+            </div>
+
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.perfil-page {
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.perfil-container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.perfil-title {
+    text-align: center;
+    color: white;
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+}
+
+.perfil-grid {
+    display: grid;
+    grid-template-columns: 0.5fr 1.0fr;
+    gap: 30px;
+}
+
+
+.card {
+    background: #111;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    color: #eee;
+}
+
+.card-info {
+    align-self: flex-start;
+    padding: 20px;
+}
+
+
+.card-info {
+    text-align: center;
+    background: linear-gradient(180deg, #1f1f2e, #14141d);
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+    margin: 15px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+}
+
+.username {
+    color: #aaa;
+}
+
+.badge-admin {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 6px 16px;
+    border-radius: 20px;
+    background: #667eea;
+    font-size: 12px;
+}
+
+.info-list {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.info-list p {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #222;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.btn-primary {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-secondary {
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background: #2a2a2a;
+    color: #ccc;
+    text-align: center;
+    text-decoration: none;
+}
+
+@media (max-width: 900px) {
+    .perfil-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
